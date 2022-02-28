@@ -32,6 +32,8 @@
             fbTodos = [todo, ...fbTodos];
         });
 
+        fbTodos.sort((a, b) => a.createdAt - b.createdAt);
+
         todos = fbTodos;
     });
 
@@ -73,26 +75,28 @@
     // $: console.table(todos);
 </script>
 
-<input type="text" placeholder="New task...." bind:value={task} />
-<button on:click={addTodo}>Add</button>
+<div class="main-container">
+    <input type="text" placeholder="New task...." bind:value={task} />
+    <button on:click={addTodo}>Add</button>
 
-<ol>
-    {#each todos as item}
-        <!-- class complete akan berlaku ketika isComplete true -->
-        <li class:complete={item.isComplete}>
-            <span>
-                {item.task}
-            </span>
-            <span>
-                <button on:click={() => markAsCompleted(item)}>✓</button>
-                <button on:click={() => deleteTodo(item.id)}>✖</button>
-            </span>
-        </li>
-    {:else}
-        <p>No todos yet.</p>
-    {/each}
-    <p class="error">{error}</p>
-</ol>
+    <ol>
+        {#each todos as item}
+            <!-- class complete akan berlaku ketika isComplete true -->
+            <li class:complete={item.isComplete}>
+                <span>
+                    {item.task}
+                </span>
+                <span>
+                    <button on:click={() => markAsCompleted(item)}>✓</button>
+                    <button on:click={() => deleteTodo(item.id)}>✖</button>
+                </span>
+            </li>
+        {:else}
+            <p>No todos yet.</p>
+        {/each}
+        <p class="error">{error}</p>
+    </ol>
+</div>
 
 <svelte:window on:keydown={keyIsPressed} />
 
@@ -103,5 +107,14 @@
 
     .error {
         color: red;
+    }
+
+    .main-container {
+        display: block;
+        width: 500px;
+        margin: 0 auto;
+        border: 1px solid;
+        padding: 10px;
+        box-shadow: 3px 6px #888888;
     }
 </style>
